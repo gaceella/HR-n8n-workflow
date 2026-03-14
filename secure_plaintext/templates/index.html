@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Secure Notes Pro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="overlay">
+  <div class="panel">
+
+    <h1>SECURE NOTES PRO</h1>
+    <h2>Linear Algebra Encryption System</h2>
+    <p class="subtitle">Step 1: Generate Key → Step 2: Encrypt → Step 3: Decrypt</p>
+
+    <form method="POST">
+        <textarea name="text" placeholder="Enter your message here..."></textarea>
+
+        <div class="buttons">
+            <button name="action" value="genkey">Generate Secure Key</button>
+            <button name="action" value="encrypt">Encrypt</button>
+            <button name="action" value="decrypt">Decrypt</button>
+        </div>
+    </form>
+
+    <p class="message">{{ message }}</p>
+
+    {% if key_display %}
+      <pre class="keybox">{{ key_display }}</pre>
+      <a href="/download_key"><button>Download Key File</button></a>
+    {% endif %}
+
+    <div class="output">{{ result }}</div>
+
+  </div>
+</div>
+
+</body>
+</html>
