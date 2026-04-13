@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI & DevOps Practitioner – Building Real-World Projects</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #111827;
+    --bg3: #1a2236;
+    --card: #141c2e;
+    --border: rgba(99,179,237,0.15);
+    --accent: #63b3ed;
+    --accent2: #76e4b8;
+    --accent3: #9f7aea;
+    --text: #e2e8f0;
+    --muted: #8892a4;
+    --tag-bg: rgba(99,179,237,0.1);
+    --tag-text: #90cdf4;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,14,26,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-logo { font-size: 18px; font-weight: 600; color: var(--accent); letter-spacing: 0.5px; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cv { background: var(--accent); color: #0a0e1a; border: none; padding: 7px 18px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; transition: opacity .2s; }
+  .nav-cv:hover { opacity: .85; }
+
+  /* HERO */
+  .hero {
+    min-height: 92vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(99,179,237,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    max-width: 860px; width: 100%;
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 3rem; align-items: center; position: relative;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--tag-bg); color: var(--tag-text);
+    border: 1px solid rgba(99,179,237,0.25);
+    border-radius: 999px; padding: 5px 16px; font-size: 13px;
+    margin-bottom: 1.5rem; letter-spacing: 0.3px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    font-weight: 800; line-height: 1.1;
+    margin-bottom: 1rem; color: #fff;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub {
+    font-size: 16px; color: var(--muted);
+    max-width: 480px; margin-bottom: 2rem; line-height: 1.65;
+  }
+  .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.75rem; }
+  .btn-primary {
+    background: var(--accent); color: #0a0e1a;
+    border: none; padding: 11px 24px; border-radius: 8px;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    text-decoration: none; transition: opacity 0.2s; display: inline-block;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+  .btn-outline {
+    background: transparent; color: var(--accent);
+    border: 1px solid rgba(99,179,237,0.4); padding: 11px 24px; border-radius: 8px;
+    font-size: 14px; font-weight: 500; cursor: pointer;
+    text-decoration: none; transition: background 0.2s; display: inline-block;
+  }
+  .btn-outline:hover { background: rgba(99,179,237,0.08); }
+  .hero-links { display: flex; gap: 20px; flex-wrap: wrap; }
+  .hero-links a { color: var(--muted); text-decoration: none; font-size: 13px; display: flex; align-items: center; gap: 5px; transition: color 0.2s; }
+  .hero-links a:hover { color: var(--accent); }
+
+  /* AVATAR */
+  .avatar-wrap { flex-shrink: 0; }
+  /* ========================================================
+     IMAGE PLACEHOLDER — replace "profile.jpg" with your file
+     Upload your photo to the repo with the name: profile.jpg
+     ======================================================== */
+  .avatar-img {
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    border: 3px solid rgba(99,179,237,0.4);
+    object-fit: cover; object-position: center top;
+    display: block;
+    background: var(--bg3);
+  }
+  .avatar-fallback {
+    width: 190px; height: 190px;
+    border-radius: 50%;
+    border: 3px solid rgba(99,179,237,0.4);
+    background: var(--bg3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 52px; font-weight: 700; color: var(--accent);
+  }
+
+  /* SECTIONS */
+  section { padding: 5rem 2rem; max-width: 1000px; margin: 0 auto; }
+  .section-label {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700; color: #fff; margin-bottom: 0.75rem;
+  }
+  .section-sub { color: var(--muted); font-size: 15px; margin-bottom: 3rem; }
+  .divider { width: 48px; height: 3px; background: var(--accent); border-radius: 2px; margin-bottom: 2.5rem; }
+
+  /* ABOUT */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: 15px; }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .stat-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.25rem; text-align: center;
+  }
+  .stat-num { font-size: 28px; font-weight: 700; color: var(--accent); }
+  .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* SKILLS */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+  .skill-group {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.25rem;
+  }
+  .skill-group h4 {
+    font-size: 13px; font-weight: 600; color: var(--accent);
+    margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.8px;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    background: var(--tag-bg); color: var(--tag-text);
+    border-radius: 6px; padding: 3px 10px; font-size: 12px;
+    border: 1px solid rgba(99,179,237,0.15);
+  }
+  .tag.green { background: rgba(118,228,184,0.1); color: #76e4b8; border-color: rgba(118,228,184,0.2); }
+  .tag.purple { background: rgba(159,122,234,0.1); color: #b794f4; border-color: rgba(159,122,234,0.2); }
+
+  /* PROJECTS */
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+  .project-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 1.5rem;
+    transition: border-color 0.25s, transform 0.2s;
+    display: flex; flex-direction: column;
+    text-decoration: none;
+  }
+  .project-card:hover { border-color: rgba(99,179,237,0.4); transform: translateY(-3px); }
+  .project-type {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--accent2); font-weight: 600; margin-bottom: 0.6rem;
+  }
+  .project-card h3 { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 0.6rem; }
+  .project-card p { font-size: 13px; color: var(--muted); flex: 1; margin-bottom: 1rem; line-height: 1.6; }
+  .project-stack { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 1rem; }
+  .project-link { font-size: 13px; color: var(--accent); text-decoration: none; font-weight: 500; }
+
+  /* CERT */
+  .cert-card {
+    background: var(--card); border: 1px solid rgba(118,228,184,0.25);
+    border-radius: 14px; padding: 1.5rem 2rem;
+    display: flex; align-items: center; gap: 1.5rem;
+    max-width: 640px;
+  }
+  .cert-icon {
+    width: 52px; height: 52px; border-radius: 12px;
+    background: rgba(118,228,184,0.12); display: flex; align-items: center; justify-content: center;
+    font-size: 24px; flex-shrink: 0;
+  }
+  .cert-title { font-size: 16px; font-weight: 600; color: #fff; }
+  .cert-meta { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .cert-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+  .cert-chip {
+    background: rgba(118,228,184,0.1); color: #76e4b8;
+    border: 1px solid rgba(118,228,184,0.2);
+    border-radius: 999px; padding: 2px 10px; font-size: 11px;
+  }
+
+  /* BLOGS */
+  .blogs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+  .blog-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.25rem;
+    text-decoration: none; display: block;
+    transition: border-color 0.2s;
+  }
+  .blog-card:hover { border-color: rgba(99,179,237,0.35); }
+  .blog-date { font-size: 12px; color: var(--muted); margin-bottom: 0.5rem; }
+  .blog-card h4 { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.5; }
+  .blog-tag { display: inline-block; margin-top: 0.6rem; background: var(--tag-bg); color: var(--tag-text); border-radius: 4px; padding: 2px 8px; font-size: 11px; }
+
+  /* CONTACT */
+  .contact-inner {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 3rem; text-align: center; max-width: 600px; margin: 0 auto;
+  }
+  .contact-inner h3 { font-size: 1.6rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+  .contact-inner p { color: var(--muted); margin-bottom: 2rem; font-size: 15px; }
+  .contact-links { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .contact-link {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 18px; text-decoration: none;
+    color: var(--text); font-size: 14px; transition: border-color 0.2s, color 0.2s;
+  }
+  .contact-link:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border); text-align: center;
+    padding: 2rem; color: var(--muted); font-size: 13px;
+  }
+
+  @media (max-width: 660px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .avatar-wrap { display: none; }
+    .about-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">KM</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#blogs">Blogs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="cv.pdf" download class="nav-cv">Download CV</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">AI & DevOps Practitioner - Building Real World Projects</div>
+      <h1>Hi, I'm <span>Khansa Malik</span></h1>
+      <p class="hero-sub">AI undergraduate at FAST-NUCES, specializing in intelligent systems, DevOps automation, and technical writing. I build real-world projects that combine AI with scalable infrastructure.</p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn-primary">View Projects</a>
+        <a href="cv.pdf" download class="btn-outline">Download CV</a>
+        <a href="#contact" class="btn-outline">Contact Me</a>
+      </div>
+      <div class="hero-links">
+        <a href="https://github.com/gaceella" target="_blank" rel="noopener">
+          <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+          GitHub
+        </a>
+        <a href="https://gaceella.hashnode.dev" target="_blank" rel="noopener">
+          <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M22.16 7.9 16.1 1.84a6.3 6.3 0 0 0-8.9 0L1.14 7.9a3.9 3.9 0 0 0 0 5.51l6.06 6.06a6.3 6.3 0 0 0 8.9 0l6.06-6.06a3.9 3.9 0 0 0 0-5.51zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>
+          Hashnode
+        </a>
+        <a href="https://www.linkedin.com/in/khansa-malik-911b26348" target="_blank" rel="noopener">
+          <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <a href="mailto:khansamalik0076@gmail.com">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+          Email
+        </a>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         YOUR PROFILE PHOTO — HOW TO ADD IT:
+         1. Save your photo as:  profile.jpg
+         2. Upload profile.jpg to your gaceellaa.github.io repo
+         3. That's it! Your photo will appear here automatically.
+         If the image fails to load, "KM" initials show instead.
+         ============================================================ -->
+    <div class="avatar-wrap">
+      <img
+        class="avatar-img"
+        src="profile.jpg"
+        alt="Khansa Malik"
+        onerror="this.style.display='none'; document.getElementById('avatar-fallback').style.display='flex';"
+      >
+      <div class="avatar-fallback" id="avatar-fallback" style="display:none;">KM</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About me</div>
+  <div class="section-title">Who I am</div>
+  <div class="divider"></div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm a B.S. Artificial Intelligence student at FAST-NUCES,  with hands-on experience in DevOps, machine learning, and full-stack development.</p>
+
+      <p>I specialize in building real-world systems  including CI/CD pipelines, containerized applications, machine learning models, and IoT-based solutions  with a focus on scalability and efficiency.</p>
+
+      <p>I also contribute to the tech community through technical writing, having published 50+ articles on Hashnode covering AI, DevOps, and modern development practices.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card"><div class="stat-num">50+</div><div class="stat-label">Blog articles</div></div>
+      <div class="stat-card"><div class="stat-num">15+</div><div class="stat-label">Projects built</div></div>
+      <div class="stat-card"><div class="stat-num">OCI</div><div class="stat-label">Cloud certified</div></div>
+      <div class="stat-card"><div class="stat-num">2024</div><div class="stat-label">Started at FAST-NUCES</div></div>
+      <div class="stat-card">
+      <div class="stat-num">Bronze</div>
+      <div class="stat-label">Medalist – FAST-NUCES</div>
+</div>
+      <div class="stat-card">
+  <div class="stat-num">COLAB Research Lab</div>
+  <div class="stat-label">Workshop Instructor & Senior Member</div>
+</div>
+    </div>
+  </div>
+</section>
+
+<!--Experience-->
+<section id="experience">
+  <div class="section-label">Experience</div>
+  <div class="section-title">Practical Experience</div>
+  <div class="divider"></div>
+
+  <div class="cert-card">
+    
+    <div>
+      <div class="cert-title">Workshop Instructor – Python & DevOps</div>
+      <div class="cert-meta">COLAB Research Lab , FAST-NUCES</div>
+      <div class="cert-meta">
+        Conducted hands-on workshops on Python programming, DevOps fundamentals, and CI/CD pipelines, focusing on practical implementation and real-world workflows.
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="cert-card">
+    
+    <div>
+      <div class="cert-title">Senior Member (Tier 3) – COLAB</div>
+      <div class="cert-meta">FAST-NUCES, Peshawar</div>
+      <div class="cert-meta">
+        Worked as a Tier 3 senior member in COLAB, contributing to technical learning activities, workshops, and collaborative student projects.
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="cert-card">
+    
+    <div>
+      <div class="cert-title">AI, DevOps & Software Projects</div>
+      <div class="cert-meta">Self-driven & Academic Projects</div>
+      <div class="cert-meta">
+        Developed multiple real-world projects including machine learning systems, CI/CD pipelines, and containerized applications using Docker and Kubernetes.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">Technical skills</div>
+  <div class="section-title">What I work with</div>
+  <div class="divider"></div>
+  <div class="skills-grid">
+    <div class="skill-group">
+      <h4>Languages</h4>
+      <div class="skill-tags">
+        <span class="tag">Python</span><span class="tag">Shell / Bash</span><span class="tag">JavaScript</span><span class="tag">C / C++</span><span class="tag">HTML &amp; CSS</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <h4>DevOps &amp; CI/CD</h4>
+      <div class="skill-tags">
+        <span class="tag green">Jenkins</span><span class="tag green">GitHub Actions</span><span class="tag green">GitLab CI/CD</span><span class="tag green">Puppet</span><span class="tag green">Monit</span><span class="tag green">Prometheus</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <h4>Containers &amp; Cloud</h4>
+      <div class="skill-tags">
+        <span class="tag purple">Docker</span><span class="tag purple">Docker Compose</span><span class="tag purple">Kubernetes</span><span class="tag purple">Helm</span><span class="tag purple">OCI</span><span class="tag purple">AWS EC2</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <h4>Machine Learning</h4>
+      <div class="skill-tags">
+        <span class="tag">Scikit-learn</span><span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">Matplotlib</span><span class="tag">SciPy</span><span class="tag">Streamlit</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <h4>Databases</h4>
+      <div class="skill-tags">
+        <span class="tag">PostgreSQL</span><span class="tag">MySQL</span><span class="tag">MongoDB</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <h4>Web &amp; Frameworks</h4>
+      <div class="skill-tags">
+        <span class="tag">Django</span><span class="tag">Flask</span><span class="tag">Node.js</span><span class="tag">REST APIs</span><span class="tag">Hugo</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Work</div>
+  <div class="section-title">Featured projects</div>
+  <div class="section-sub">Click any card to open the GitHub repository.</div>
+  <div class="projects-grid">
+
+    <a class="project-card" href="https://github.com/gaceella/fraud_detection_system" target="_blank" rel="noopener">
+      <div class="project-type">Machine Learning</div>
+      <h3>Real-Time Fraud Detection System</h3>
+      <p>ML pipeline for detecting fraudulent transactions in real time using supervised learning and Flask for live inference.</p>
+      <div class="project-stack"><span class="tag">Python</span><span class="tag">Scikit-learn</span><span class="tag">Flask</span><span class="tag">Jupyter</span></div>
+      <span class="project-link">View on GitHub →</span>
+    </a>
+
+    <a class="project-card" href="https://github.com/gaceella/customer_churn" target="_blank" rel="noopener">
+      <div class="project-type">Machine Learning</div>
+      <h3>Customer Churn Prediction</h3>
+      <p>End-to-end supervised learning pipeline with EDA, feature engineering, and Scikit-learn classifiers to predict churn.</p>
+      <div class="project-stack"><span class="tag">Python</span><span class="tag">Scikit-learn</span><span class="tag">Pandas</span><span class="tag">Jupyter</span></div>
+      <span class="project-link">View on GitHub →</span>
+    </a>
+
+    <a class="project-card" href="https://github.com/gaceella/Puppet_MonitProject" target="_blank" rel="noopener">
+      <div class="project-type">DevOps</div>
+      <h3>Automated Apache Recovery with Puppet &amp; Monit</h3>
+      <p>Self-healing Apache server — automated install via Puppet, real-time monitoring with Monit, and automatic failure recovery.</p>
+      <div class="project-stack"><span class="tag green">Puppet</span><span class="tag green">Monit</span><span class="tag green">Apache</span><span class="tag">Linux</span></div>
+      <span class="project-link">View on GitHub →</span>
+    </a>
+
+    <a class="project-card" href="https://github.com/gaceella/voting_testing" target="_blank" rel="noopener">
+      <div class="project-type">DevOps</div>
+      <h3>CI/CD Pipeline with Jenkins &amp; Pytest</h3>
+      <p>Full CI/CD pipeline integrating Jenkins with GitHub — automated Pytest testing, virtual env setup, and live build status per commit.</p>
+      <div class="project-stack"><span class="tag green">Jenkins</span><span class="tag green">Pytest</span><span class="tag">Python</span><span class="tag">GitHub</span></div>
+      <span class="project-link">View on GitHub →</span>
+    </a>
+
+    <a class="project-card" href="https://github.com/gaceella/my-compose-app" target="_blank" rel="noopener">
+      <div class="project-type">DevOps</div>
+      <h3>Containerized Django Calculator</h3>
+      <p>Django calculator app containerized with Docker and Docker Compose — image builds, volume mounting, and port mapping.</p>
+      <div class="project-stack"><span class="tag purple">Docker</span><span class="tag purple">Docker Compose</span><span class="tag">Django</span><span class="tag">Python</span></div>
+      <span class="project-link">View on GitHub →</span>
+    </a>
+
+    <a class="project-card" href="https://github.com/gaceella/secure_plaintext" target="_blank" rel="noopener">
+      <div class="project-type">Security</div>
+      <h3>Secure Notes App (Linear Algebra Encryption)</h3>
+      <p>Python web app encrypting notes using matrix-based linear algebra — applied cryptography meets math.</p>
+      <div class="project-stack"><span class="tag">Python</span><span class="tag">Cryptography</span><span class="tag">Linear Algebra</span></div>
+      <span class="project-link">View on GitHub →</span>
+    </a>
+
+    <a class="project-card" href="https://github.com/gaceella/Ride_Hailing_Probability" target="_blank" rel="noopener">
+      <div class="project-type">Data Science</div>
+      <h3>Probabilistic Ride-Hailing Demand Model</h3>
+      <p>Statistical model of ride-hailing requests using Python probability distributions, SciPy analysis, and Bokeh visualizations.</p>
+      <div class="project-stack"><span class="tag">Python</span><span class="tag">SciPy</span><span class="tag">Bokeh</span><span class="tag">Pandas</span></div>
+      <span class="project-link">View on GitHub →</span>
+    </a>
+
+    <a class="project-card" href="https://github.com/gaceella/colab_model" target="_blank" rel="noopener">
+      <div class="project-type">Machine Learning / NLP</div>
+      <h3> Chatbot Model (Mistral-based System)</h3>
+      <p>A conversational AI chatbot built using a rule-based + LLM-style prompt system for COLAB lab information and queries, simulating structured Q&A responses.</p>
+      <div class="project-stack">
+      <span class="tag">Python</span>
+      <span class="tag">Mistral</span>
+      <span class="tag">NLP</span>
+      <span class="tag">Prompt Engineering</span>
+      </div>
+      <span class="project-link">View on GitHub →</span>
+    </a>
+
+    <a class="project-card" href="https://github.com/gaceella/DHT_Arduino" target="_blank" rel="noopener">
+      <div class="project-type">IoT / Hardware</div>
+      <h3>IoT Data Logging with Arduino &amp; DHT11</h3>
+      <p>Real-time temperature and humidity logging using DHT11 sensor with Arduino CLI, serial communication, and Python data capture.</p>
+      <div class="project-stack"><span class="tag">Arduino</span><span class="tag">Python</span><span class="tag">IoT</span><span class="tag">Serial</span></div>
+      <span class="project-link">View on GitHub →</span>
+    </a>
+
+    <a class="project-card" href="https://github.com/gaceella/Dijkstra_huffmancode" target="_blank" rel="noopener">
+      <div class="project-type">Algorithms</div>
+      <h3>Dijkstra &amp; Huffman Code Implementation</h3>
+      <p>Python implementations of Dijkstra shortest path and Huffman compression algorithms with clean output visualisation.</p>
+      <div class="project-stack"><span class="tag">Python</span><span class="tag">Algorithms</span><span class="tag">Data Structures</span></div>
+      <span class="project-link">View on GitHub →</span>
+    </a>
+
+  </div>
+  <div style="text-align:center; margin-top: 2rem;">
+    <a href="https://github.com/gaceella" target="_blank" rel="noopener" class="btn-outline">Check my remaining projects on Github →</a>
+  </div>
+</section>
+
+<!-- CERTIFICATION -->
+<section id="cert">
+  <div class="section-label">Certification</div>
+  <div class="section-title">Cloud credentials</div>
+  <div class="divider"></div>
+  <div class="cert-card">
+    <div class="cert-icon">☁️</div>
+    <div>
+      <div class="cert-title">Oracle Cloud Infrastructure 2025 Foundations Associate</div>
+      <div class="cert-meta">1Z0-1085-25 &nbsp;·&nbsp; Issued Oct 2025 &nbsp;·&nbsp; Expires Oct 2027</div>
+      <div class="cert-chips">
+        <span class="cert-chip">OCI Compute</span><span class="cert-chip">Storage</span><span class="cert-chip">Networking</span><span class="cert-chip">IAM</span><span class="cert-chip">Cloud Security</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOGS -->
+<section id="blogs">
+  <div class="section-label">Writing</div>
+  <div class="section-title">Latest from the blog</div>
+  <div class="section-sub">Click any article to read it on Hashnode.</div>
+  <div class="blogs-grid">
+    <a href="https://gaceella.hashnode.dev/real-time-fraud-detection-with-machine-learning-and-flask" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-date">Mar 2026</div>
+      <h4>Real-Time Fraud Detection with Machine Learning and Flask</h4>
+      <span class="blog-tag">ML</span>
+    </a>
+    <a href="https://gaceella.hashnode.dev/supervised-learning-important-algorithms-used-in-machine-learning" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-date">Mar 2026</div>
+      <h4>Supervised Learning: Important Algorithms Used in Machine Learning</h4>
+      <span class="blog-tag">ML</span>
+    </a>
+    <a href="https://gaceella.hashnode.dev/modeling-ride-hailing-requests-and-acceptance-using-python-and-probability" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-date">Feb 2026</div>
+      <h4>Modeling Ride-Hailing Requests and Acceptance Using Python and Probability</h4>
+      <span class="blog-tag">Data Science</span>
+    </a>
+    <a href="https://gaceella.hashnode.dev/why-linear-algebra-matters-from-machine-learning-foundations-to-encryption" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-date">Jan 2026</div>
+      <h4>Why Linear Algebra Matters: From ML Foundations to Encryption</h4>
+      <span class="blog-tag">Math</span>
+    </a>
+    <a href="https://gaceella.hashnode.dev/system-monitoring-using-prometheus" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-date">Jan 2026</div>
+      <h4>System Monitoring Using Prometheus</h4>
+      <span class="blog-tag">DevOps</span>
+    </a>
+    <a href="https://gaceella.hashnode.dev/advance-topics-of-kuberneteshelm-crds-networking-and-scaling" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-date">Jul 2025</div>
+      <h4>Advanced Kubernetes: Helm, CRDs, Networking and Scaling</h4>
+      <span class="blog-tag">DevOps</span>
+    </a>
+    <a href="https://gaceella.hashnode.dev/cicd-with-jenkins-and-docker" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-date">Jul 2025</div>
+      <h4>CI/CD with Jenkins and Docker</h4>
+      <span class="blog-tag">DevOps</span>
+    </a>
+    <a href="https://gaceella.hashnode.dev/my-experience-with-oracle-cloud-infrastructure-oci-foundations-associate-2025" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-date">Nov 2025</div>
+      <h4>My Experience with Oracle Cloud Infrastructure Foundations Associate 2025</h4>
+      <span class="blog-tag">Cloud</span>
+    </a>
+    <a href="https://gaceella.hashnode.dev/dockers" target="_blank" rel="noopener" class="blog-card">
+      <div class="blog-date">Jul 2025</div>
+      <h4>Docker: Build, Ship and Run Containerized Applications</h4>
+      <span class="blog-tag">DevOps</span>
+    </a>
+  </div>
+  <div style="text-align:center; margin-top: 2rem;">
+    <a href="https://gaceella.hashnode.dev" target="_blank" rel="noopener" class="btn-outline">Read all 50+ articles on Hashnode →</a>
+  </div>
+</section>
+
+<!--achievemnt-->
+<section id="achievements">
+  <div class="section-label">Achievements</div>
+  <div class="section-title">Milestones</div>
+  <div class="divider"></div>
+
+  <div class="cert-card">
+    <div class="cert-icon">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/>
+      </svg>
+    </div> 
+    <div>
+      <div class="cert-title">Bronze Medalist</div>
+      <div class="cert-meta">FAST-NUCES, Peshawar</div>
+    </div>
+  </div>
+  </section>
+
+<!--education-->
+<section id="education">
+  <div class="section-label">Education</div>
+  <div class="section-title">Academic Background</div>
+  <div class="divider"></div>
+
+  <div class="cert-card">
+    <div class="cert-icon">
+      <svg width="26" height="26" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+      <path d="M5 13.18V17c0 2.76 3.58 5 8 5s8-2.24 8-5v-3.82L13 17l-8-3.82z"/>
+      </svg>
+    </div>
+    <div>
+      <div class="cert-title">Bachelor of Science in Artificial Intelligence</div>
+      <div class="cert-meta">FAST National University of Computer and Emerging Sciences</div>
+      <div class="cert-meta">2024 – Present</div>
+    </div>
+  </div>
+
+  <br>
+
+
+  <div class="cert-card">
+    <div class="cert-icon">
+      <svg width="26" height="26" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+      <path d="M5 13.18V17c0 2.76 3.58 5 8 5s8-2.24 8-5v-3.82L13 17l-8-3.82z"/>
+      </svg>
+    </div>
+    <div>
+      <div class="cert-title">College Education</div>
+      <div class="cert-meta">Islamia College</div>
+      <div class="cert-meta">Year ( 2022 – 2024)</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <h3>Let's connect</h3>
+    <p>Open to opportunities, collaborations, and conversations about AI and DevOps.</p>
+    <div class="contact-links">
+      <a href="mailto:khansamalik0076@gmail.com" class="contact-link">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+        khansamalik0076@gmail.com
+      </a>
+      <a href="https://github.com/gaceella" target="_blank" rel="noopener" class="contact-link">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+        github.com/gaceella
+      </a>
+      <a href="https://www.linkedin.com/in/khansa-malik-911b26348" target="_blank" rel="noopener" class="contact-link">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://gaceella.hashnode.dev" target="_blank" rel="noopener" class="contact-link">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M22.16 7.9 16.1 1.84a6.3 6.3 0 0 0-8.9 0L1.14 7.9a3.9 3.9 0 0 0 0 5.51l6.06 6.06a6.3 6.3 0 0 0 8.9 0l6.06-6.06a3.9 3.9 0 0 0 0-5.51zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>
+        Hashnode Blog
+      </a>
+      
+    </div>
+  </div>
+</section>
+
+
+<footer>
+  <p>Designed &amp; built by Khansa Malik &nbsp;·&nbsp; gaceellaa.github.io &nbsp;·&nbsp; 2026</p>
+</footer>
+
+</body>
+</html>
