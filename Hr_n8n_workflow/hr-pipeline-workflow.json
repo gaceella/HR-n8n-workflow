@@ -1,0 +1,131 @@
+{
+  "name": "Automated HR Job Applicant Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_URL",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Form Responses 1",
+          "cachedResultUrl": "YOUR_GOOGLE_SHEET_URL"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -64
+      ],
+      "id": "04f9cba9-24a7-42d5-acf3-56226508a47e",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "YOUR_GMAIL@gmail.com",
+        "toEmail": "={{ $json[\"Email Address\"] }}",
+        "subject": "Your Job Application Received!",
+        "emailFormat": "text",
+        "text": "=Dear {{ $json[\"Full Name\"] }},\n\nThank you for applying for the \n{{ $json[\"Position Applied For\"] }} position.\n\nWe have received your application \nand will review it shortly.\nWe will contact you within 3-5 business days.\n\nBest regards,\nHR Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -32,
+        -64
+      ],
+      "id": "609daf96-3703-4925-be12-2232422e9a25",
+      "name": "Send an Email",
+      "credentials": {
+        "smtp": {
+          "id": "YOUR_SMTP_CREDENTIAL_ID",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "YOUR_SLACK_CHANNEL_ID",
+          "mode": "list",
+          "cachedResultName": "new-applications"
+        },
+        "text": "=🆕 New Job Application Received!  👤 Name: {{ $json[\"Full Name\"] }} 📧 Email: {{ $json[\"Email Address\"] }} 📞 Phone: {{ $json[\"Phone Number\"] }} 💼 Position: {{ $json[\"Position Applied For\"] }} 📅 Experience: {{ $json[\"Years of Experience\"] }} years  Please review the application!",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.5,
+      "position": [
+        224,
+        -64
+      ],
+      "id": "3b3397ed-0126-4931-aa68-cfc5e82af4d8",
+      "name": "Send a message1",
+      "credentials": {
+        "slackApi": {
+          "id": "YOUR_SLACK_CREDENTIAL_ID",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send an Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an Email": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "tags": []
+}
