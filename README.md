@@ -147,7 +147,7 @@ Use `.env.example` as a reference to set up your own credentials.
 
 **Khansa Malik**
 AI Engineer Intern @ CarbonRepro
-Skills: n8n · Python · AI Agents · Workflow Automation
+Skills:Gen AI . AI Agents . LLM . RAG . n8n · Python ·  Workflow Automation
 
 ---
 
